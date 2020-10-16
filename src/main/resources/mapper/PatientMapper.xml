@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniuxy.his.mapper.PatientMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.woniuxy.his.entity.Patient">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="age" property="age" />
+        <result column="password" property="password" />
+        <result column="bid" property="bid" />
+        <result column="doctor_id" property="doctorId" />
+        <result column="tel" property="tel" />
+        <result column="status" property="status" />
+        <result column="in_time" property="inTime" />
+        <result column="out_time" property="outTime" />
+        <result column="did" property="did" />
+        <result column="money" property="money" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, age, password, bid, doctor_id, tel, status, in_time, out_time, did, money
+    </sql>
+    <!-- 查询住院病人 -->
+    <select id="selectPatientsByIn" resultMap="BaseResultMap">
+	    SELECT p0.* 
+		 from patient p0  JOIN patient_info p1 ON p1.patient_id = p0.id WHERE
+		  p1.status = 0
+    </select>
+    <!-- 查询出院病人 -->
+    <select id="selectPatientsByOut" resultMap="BaseResultMap">
+	    SELECT p0.* 
+		 from patient p0  JOIN patient_info p1 ON p1.patient_id = p0.id WHERE
+		  p1.status != 0
+    </select>
+    <select id="selectPatientsPageByOut" resultType="map">
+	    SELECT p0.* 
+		 from patient p0  JOIN patient_info p1 ON p1.patient_id = p0.id WHERE
+		  p1.status != #{status}
+    </select>
+    
+    <select id="selectPatientsPageByIn" resultType="map">
+	    SELECT p0.* 
+		 from patient p0  JOIN patient_info p1 ON p1.patient_id = p0.id WHERE
+		  p1.status = #{status}
+    </select>
+
+</mapper>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>预交款</title>
+<script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="/js/vue.min.js"></script>
+<!-- 引入样式 -->
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+<!-- 引入组件库 -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+</head>
+<body>
+    <div id="app">
+	    <el-col :span="6">
+	    <el-input v-model="input" placeholder="请输入病人id" ></el-input>
+	    </el-col>       
+        <el-button @click="selectPatientById()">查询</el-button>		
+		<el-table  border style="width: 100%" stripe  :data="list"> 		        
+				<el-table-column fixed :span="2" prop="patient.id" label="病人id"> </el-table-column> 
+				<el-table-column :span="6" prop="patient.name" label="姓名"> </el-table-column> 				
+				<el-table-column :span="4" prop="patient.tel" label="电话"> </el-table-column>  
+				<el-table-column :span="4" prop="patient.money" label="余额"> </el-table-column>
+				<el-table-column :span="2" prop="totalmoney" label="住院总金额"> </el-table-column>
+				<el-table-column :span="2" prop="paymoney" label="需要交纳的金额"> </el-table-column>  
+				<el-table-column :span="4" label="操作">
+					<template slot-scope="scope">
+						<el-button @click="clearBills()" type="text" size="small">结清费用</el-button>						
+					</template>
+				</el-table-column> 
+		</el-table>
+				
+	</div>
+	<script type="text/javascript">	
+			new Vue({
+				el:"#app",
+				data:{
+					list:[],										
+					input:"",
+					id:"",
+					money:"",
+					paymoney:"",
+					outtime:"",
+				},				
+				methods:{															
+					//根据病人ID查询
+					selectPatientById(){						
+						var _this = this;
+						_this.list = [];
+						$.ajax({
+							url:"/patient/clearbills",
+							data:{id:_this.input},
+							success:function(data){
+								if(data.code == "200"){
+									if(data.obj.status == 3){
+										alert("该病人已缴费");
+										_this.input="";
+									}else if(data.obj.status == 2){
+										_this.list.push(data.obj);
+										_this.id = data.obj.patient.id;
+										_this.money = data.obj.patient.money;
+										_this.paymoney = data.obj.paymoney;
+										_this.outtime = data.obj.patient.outTime;
+									}else if(data.obj.status == 1){
+										alert("等待医生审批")
+										_this.input="";
+									}
+								}else{
+									alert("未找到该病人")
+									_this.input="";
+								}								
+							},							
+						})
+					},					
+					clearBills:function(){
+						var _this=this;
+						$.ajax({
+							url:"/patient/clearbillsbtn",
+							data:{id:_this.id,money:_this.money,paymoney:_this.paymoney,date:_this.outtime},
+							success:function(data){
+								if(data.code=="200"){
+									alert("结算成功");
+									location.replace("/page/charge/settleaccounts.html");
+								}else{
+									alert("结算失败")
+								}							
+							}	
+						})					
+					},	
+				}
+			})									
+	</script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniuxy.his.mapper.OperatingRecordMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.woniuxy.his.entity.OperatingRecord">
+        <id column="id" property="id" />
+        <result column="patient_id" property="patientId" />
+        <result column="details" property="details" />
+        <result column="money" property="money" />
+        <result column="time" property="time" />
+        <result column="status" property="status" />
+        <result column="invoice" property="invoice" />
+        <result column="total_paymoney" property="totalPaymoney" />
+        <result column="remark" property="remark" />
+        <result column="patient_name" property="patientName" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, patient_id, details, money, time, status, invoice, total_paymoney, remark, patient_name
+    </sql>
+    <!-- 根据ID查人结算 -->
+    <select id="selectDailySettlementById" resultMap="BaseResultMap">
+        select 
+          id, patient_id, details, money, time, status, invoice, total_paymoney, remark, patient_name
+         from operating_record where date(time) = CURDATE() AND status=2 AND patient_id=#{id}
+    </select>
+    <!-- 根据状态查详情 -->
+    <select id="selectOperatingRecordByStatus" resultMap="BaseResultMap">
+        select 
+          id, patient_id, details, money, time, status, invoice, total_paymoney, remark, patient_name
+         from operating_record where patient_id = #{patientId} AND status = #{status}
+    </select>
+   
+
+</mapper>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>预交款</title>
+<script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="/js/vue.min.js"></script>
+
+
+<!-- 引入样式 -->
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+<!-- 引入组件库 -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
+<body>
+    <div id="app">
+	    <el-col :span="6">
+	    <el-input v-model="input" placeholder="请输入病人id" ></el-input>
+	    </el-col>       
+        <el-button @click="selectPatientById()">查询</el-button>
+		<el-table :data="list" border style="width: 100%"> 		        
+				<el-table-column fixed :span="2" prop="id" label="病人id"> </el-table-column> 
+				<el-table-column :span="6" prop="name" label="姓名"> </el-table-column> 
+				<el-table-column :span="2" prop="age" label="年龄"> </el-table-column>
+				<el-table-column :span="4" prop="tel" label="电话"> </el-table-column>  
+				<el-table-column :span="4" prop="money" label="余额"> </el-table-column> 
+				<el-table-column :span="6" label="操作">
+					<template slot-scope="scope">
+						<el-button @click="saveMoney(scope.row.id)" type="text" size="small">新增预交款</el-button>						
+					</template>
+				</el-table-column> 
+		</el-table>
+		
+		
+		<div class="block">
+		    <span class="demonstration"></span>
+		    <el-pagination
+		      @size-change="handleSizeChange"
+		      @current-change="handleCurrentChange"
+		      :current-page="currentPage4"
+		      :page-sizes="[5, 10, 20, 40]"
+		      :page-size="5"
+		      layout="total, sizes, prev, pager, next, jumper"
+		      :total="total" 
+		      :disabled="flag">
+		    </el-pagination>
+		  </div>
+		
+		
+		
+		<!--新增模态框-->
+		<el-dialog title="新增预交费" :visible.sync="setAdvanceDialogVisible"
+			width="30%">
+		<div>
+			<input type="text" placeholder="请输入预交费金额" v-model="money"/> 
+		</div>
+		<span slot="footer" class="dialog-footer"> <el-button
+				@click="setAdvanceDialogVisible = false">取 消</el-button> <el-button
+				type="primary" @click="affirm()">确 认</el-button>
+		</span> 
+		</el-dialog>
+	</div>
+	<script type="text/javascript">	
+			new Vue({
+				el:"#app",
+				data:{
+					list:[],
+					id:"",
+					money:"",
+					input:"",
+					setAdvanceDialogVisible:false,
+					
+					currentPage4: 1,
+					total:"",
+					showNum:5,
+					flag:false
+				},
+				created:function(){
+					this.selectData();					
+				},
+				methods:{
+					selectData:function(){
+						var _this=this;
+						_this.flag = false;
+						$.ajax({
+							data:{pageNow:_this.currentPage4,showNum:_this.showNum},
+							url:"/patient/all",
+							success:function(data){
+								_this.list = data.obj.records;
+								_this.total = data.obj.total;
+							}							
+						})						
+					},
+					//显示新增预交款模态框
+					saveMoney(id){
+						var _this=this;
+						_this.setAdvanceDialogVisible = true;
+						_this.id = id;
+					},
+					affirm(){
+						var _this=this;
+						$.ajax({
+							url:"/patient/affirm",
+							type:"post",
+							data:{id:_this.id,money:_this.money},
+							success:function(data){
+								if(data.code == "200"){
+									alert("预交成功");
+									_this.setAdvanceDialogVisible = false;
+									_this.selectData();
+								}else{
+									alert("预交失败");
+								}
+								
+							}
+						})
+					},
+					//根据病人ID查询
+					selectPatientById(){
+						var _this=this;
+						if(_this.input == ""){
+						  _this.selectData()
+						}else{
+							_this.flag = true;
+							$.ajax({
+								url:"/patient/byid",
+								data:{id:_this.input},
+								success:function(data){
+									_this.list = data.list;								
+								}							
+							})
+						}						
+					},
+					//分页函数
+					 handleSizeChange(val) {
+						var _this=this;
+						_this.showNum = val;
+						_this.selectData()
+				      },
+				      handleCurrentChange(val) {
+				    	  var _this=this;
+				    	  _this.currentPage4 = val;
+				    	  _this.selectData();
+				      }
+				}
+				
+				
+			})
+				
+				
+	
+	</script>
+</body>
+</html>

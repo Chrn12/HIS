@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniuxy.his.mapper.MedicalAdviceMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.woniuxy.his.entity.MedicalAdvice">
+        <id column="id" property="id" />
+        <result column="doctor_id" property="doctorId" />
+        <result column="nid" property="nid" />
+        <result column="remark" property="remark" />
+        <result column="pre_id" property="preId" />
+        <result column="patient_id" property="patientId" />
+        <result column="md_price" property="mdPrice" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, doctor_id, nid, remark, pre_id, patient_id, md_price
+    </sql>
+
+</mapper>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>消费日结查询</title>
+<script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="/js/vue.min.js"></script>
+<!-- 引入样式 -->
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+<!-- 引入组件库 -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+</head>
+<body>
+    <div id="app">
+	    <el-col :span="6">
+	    <el-input v-model="input" placeholder="请输入病人id" ></el-input>
+	    </el-col>       
+        <el-button @click="selectDailySettlementById()">查询</el-button>		
+		<el-table  border style="width: 100%" stripe  :data="list"> 		        
+				<el-table-column fixed :span="2" prop="patientId" label="病人id"> </el-table-column> 
+				<el-table-column :span="6" prop="patientName" label="姓名"> </el-table-column> 				
+				<el-table-column :span="4" prop="details" label="结算项目"> </el-table-column>  
+				<el-table-column :span="4" prop="money" label="当次实缴金额"> </el-table-column>
+				<el-table-column :span="2" prop="totalPaymoney" label="总付金额"> </el-table-column>
+				<el-table-column :span="2" prop="time" label="操作时间"> </el-table-column>
+				<el-table-column :span="2" prop="invoice" label="发票记录"> </el-table-column>
+				<el-table-column :span="2" prop="remark" label="备注"> </el-table-column>   				 
+		</el-table>
+				
+	</div>
+	<script type="text/javascript">	
+			new Vue({
+				el:"#app",
+				data:{
+					list:[],										
+					input:"",										
+				},				
+				methods:{															
+					//根据病人ID查询
+					selectDailySettlementById(){						
+						var _this = this;
+						_this.list = [];
+						$.ajax({
+							url:"/operatingRecord/byday",
+							data:{id:_this.input},
+							success:function(data){								
+								_this.list=data.list;								
+							}							
+						})
+					},											
+				}
+			})									
+	</script>
+</body>
+</html>

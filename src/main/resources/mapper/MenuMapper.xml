@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniuxy.his.mapper.MenuMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.woniuxy.his.entity.Menu">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="resource" property="resource" />
+        <result column="pid" property="pid" />
+        <result column="level" property="level" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, resource, pid, level
+    </sql>
+    <select id="selectMenuByRid" resultMap="BaseResultMap">
+    SELECT m.* FROM role_permission r JOIN menu m ON r.mid = m.id WHERE r.rid=#{rid};   
+    </select>
+
+</mapper>

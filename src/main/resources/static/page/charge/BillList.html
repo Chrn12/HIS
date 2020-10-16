@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>账单详情</title>
+<script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="/js/vue.min.js"></script>
+
+
+<!-- 引入样式 -->
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+<!-- 引入组件库 -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<style>
+  .el-dropdown {
+    vertical-align: top;
+  }
+  .el-dropdown + .el-dropdown {
+    margin-left: 15px;
+  }
+  .el-icon-arrow-down {
+    font-size: 12px;
+  }
+</style>
+</head>
+<body>
+    <div id="app">
+	    <el-col :span="3">
+	    <el-input v-model="input" placeholder="请输入病人id" ></el-input>
+	    </el-col>       
+        <el-button type="primary" @click="selectPatientById()">查询</el-button>
+        <el-button type="primary" @click="selectInHisPat()" type="text" size="small">在院病人查询</el-button>
+        <el-button type="primary" @click="selectOutHisPat()" type="text" size="small">出院病人查询</el-button>	
+		<el-table :data="list" border style="width: 100%"> 		        
+				<el-table-column fixed :span="2" prop="id" label="病人id"> </el-table-column> 
+				<el-table-column :span="6" prop="name" label="姓名"> </el-table-column> 
+				<el-table-column :span="2" prop="age" label="年龄"> </el-table-column>
+				<el-table-column :span="4" prop="tel" label="电话"> </el-table-column>  				
+				<el-table-column :span="6" label="操作">
+					<template slot-scope="scope">
+						<el-button type="primary" @click="showDetils(scope.row.id)" type="text" size="small">显示账单详情</el-button>						
+					</template>
+				</el-table-column> 
+		</el-table>
+		<!--分页-->
+		
+		<div class="block" id="inPage" v-show="inPage">
+		    <span class="demonstration"></span>
+		    <el-pagination
+		      @size-change="handleSizeChangeIn"
+		      @current-change="handleCurrentChangeIn"
+		      :current-page="currentPage4"
+		      :page-sizes="[5, 10, 20, 40]"
+		      :page-size="5"
+		      layout="total, sizes, prev, pager, next, jumper"
+		      :total="total" 
+		      :disabled="flag">
+		    </el-pagination>
+		  </div>
+		  
+		  <!--分页-->
+		
+		<div class="block" id="outPage" v-show="outPage">
+		    <span class="demonstration"></span>
+		    <el-pagination
+		      @size-change="handleSizeChangeOut"
+		      @current-change="handleCurrentChangeOut"
+		      :current-page="currentPage4"
+		      :page-sizes="[5, 10, 20, 40]"
+		      :page-size="5"
+		      layout="total, sizes, prev, pager, next, jumper"
+		      :total="total" 
+		      :disabled="flag">
+		    </el-pagination>
+		  </div>
+		
+		
+		
+		
+		<!--新增模态框-->
+		<el-dialog title="账单详情" :visible.sync="setDetilsDialogVisible" width="90%"> 
+						          
+	        <el-dropdown split-button type="primary" @command="handleCommand" @click="selectDetailsAll">
+			  详单总览
+			  <el-dropdown-menu slot="dropdown">
+			    <el-dropdown-item command="1" >交款查询</el-dropdown-item>
+			    <el-dropdown-item command="2" >结算查询</el-dropdown-item>			    			    
+			  </el-dropdown-menu>
+			</el-dropdown>
+	                
+			<el-table :data="patient" border style="width: 100%"> 		        
+				<el-table-column fixed :span="4" prop="patientId" label="病人id"> </el-table-column> 
+				<el-table-column :span="4" prop="patientName" label="姓名"> </el-table-column> 				
+				<el-table-column :span="4" prop="details" label="项目"> </el-table-column>  
+				<el-table-column :span="4" prop="money" label="当次实缴金额"> </el-table-column>
+				<el-table-column :span="2" prop="totalPaymoney" label="总付金额"> </el-table-column>
+				<el-table-column :span="2" prop="time" label="操作时间"> </el-table-column>
+				<el-table-column :span="2" prop="invoice" label="发票记录"> </el-table-column>
+				<el-table-column :span="2" prop="remark" label="备注"> </el-table-column> 
+			</el-table>
+		
+		
+		</el-dialog>
+	</div>
+	<script type="text/javascript">	
+			new Vue({
+				el:"#app",
+				data:{
+					list:[],
+					patient:[],
+					id:"",					
+					input:"",
+					setDetilsDialogVisible:false,	
+					
+					
+					currentPage4: 1,
+					total:"",
+					showNum:5,
+					flag:true,
+					
+					
+					inPage:false,					
+					outPage:false,
+					
+				},
+				created:function(){
+					this.selectData();					
+				},
+				methods:{
+					selectData:function(){
+						var _this=this;
+						$.ajax({
+							url:"/patient",
+							success:function(data){
+								_this.list = data.list;
+								
+							}							
+						})						
+					},					
+					showDetils(id){
+						var _this=this;
+						_this.setDetilsDialogVisible = true;
+						_this.id = id;
+						_this.selectDetailsAll();
+					},					
+					//根据病人ID查询
+					selectPatientById(){
+						var _this=this;
+						$.ajax({
+							url:"/patient/byid",
+							data:{id:_this.input},
+							success:function(data){
+								_this.list = data.list;								
+							}							
+						})
+					},
+					handleCommand(id) {
+						var _this=this;
+						$.ajax({
+							url:"/operatingRecord/bystatus",
+							data:{status:id,patientId:_this.id},
+							success:function(data){
+								_this.patient = data.list;								
+							}							
+						})
+				    },
+				    selectDetailsAll(){
+				    	var _this=this;
+						$.ajax({
+							url:"/operatingRecord/bysomething",
+							data:{id:_this.id},
+							success:function(data){
+								_this.patient = data.list;
+								
+							}							
+						})
+				    },
+				    //查询住院病人
+				    selectInHisPat(){				    	
+				    	var _this=this;
+				    	_this.flag = false;
+				    	_this.outPage = false;
+				    	_this.inPage=true
+						$.ajax({
+							url:"/patient/byin",
+							data:{pageNow:_this.currentPage4,showNum:_this.showNum},
+							success:function(data){
+								_this.list = data.obj.records;
+								_this.total = data.obj.total;								
+							}							
+						})				    				    
+				    },
+				  //查询出院病人
+				    selectOutHisPat(){
+				    	var _this=this;
+				    	_this.flag = false;
+				    	_this.inPage = false;
+				    	_this.outPage=true
+						$.ajax({
+							url:"/patient/byout",
+							data:{pageNow:_this.currentPage4,showNum:_this.showNum},
+							success:function(data){
+								_this.list = data.obj.records;
+								_this.total = data.obj.total;
+							}							
+						})
+				    },
+				  //in分页函数
+					 handleSizeChangeIn(val) {
+						var _this=this;
+						_this.showNum = val;
+						_this.selectInHisPat()
+				      },
+				      handleCurrentChangeIn(val) {
+				    	  var _this=this;
+				    	  _this.currentPage4 = val;
+				    	  _this.selectInHisPat()
+				      },
+				      //out分页函数
+				      handleSizeChangeOut(val) {
+							var _this=this;
+							_this.showNum = val;
+							_this.selectOutHisPat()
+					      },
+					      handleCurrentChangeOut(val) {
+					    	  var _this=this;
+					    	  _this.currentPage4 = val;
+					    	  _this.selectOutHisPat()
+					      },
+					
+				}
+				
+				
+			})
+				
+				
+	
+	</script>
+</body>
+</html>

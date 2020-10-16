@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>denglu</title>
+<script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="/js/vue.min.js"></script>
+
+
+<!-- 引入样式 -->
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+<!-- 引入组件库 -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
+<body style="background-image: url('/img/1.jpg'); ">
+   <div id="app">	  
+     <div id="div1" style="background-color: white;">
+       <el-container> <el-main> <el-form ref="form"
+		:model="form" label-width="80px">
+		<div >
+			<el-form-item label="账号"> <el-input
+				v-model="form.tel"></el-input></el-form-item>
+			<el-form-item label="密码"> <el-input
+				v-model="form.password"></el-input></el-form-item>
+				<el-switch 
+				  v-model="form.rememberme"
+				  active-color="#13ce66"
+				  inactive-color="#ff4949"
+				  active-text="3天之内免登录"
+				  inactive-text="关闭自动登陆">
+				</el-switch>
+			<el-form-item> <el-button type="primary"
+				@click="onSubmit">登录</el-button> </el-form-item>
+		</div>
+		</el-form> </el-main> 
+		</el-container>	   	  
+	  </div>		    				
+	</div>		
+    <script type="text/javascript">
+        var vm = new Vue({
+        	el:"#app",
+        	data:{
+        		form:{
+					tel:"",
+					password:"",
+					rememberme:false,
+				}
+        	},
+        	methods:{
+    			onSubmit:function(){
+    				var _this=this;
+    				$.ajax({
+    					url:"/user/login",
+    					data:_this.form,
+    					success:function(data){
+    						if(data.code=="200"){    							
+    							location.href="/page/index.html";
+    						}else{
+    							alert(data.message);
+    						}
+    					}
+    				})
+    			}
+    		}
+        	
+        })    
+    </script>
+    <style> 
+                   
+	    #div1 {
+			width: 25%;
+			margin-top:150px;
+			float: right;			
+		}
+    </style>
+</body>
+</html>
