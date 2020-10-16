@@ -68,7 +68,7 @@ public class shiroConfig {
 	   filterChainDefinitionMap.put("/user/login","anon");
 	   //如果不满足上方所有的规则 则需要进行登录验证
 		filterChainDefinitionMap.put("/logout", "logout");
-	   filterChainDefinitionMap.put("/**", "authc");
+	   filterChainDefinitionMap.put("/**", "user");
 	   //未登录时重定向的网页地址
 	   shiroFilterFactoryBean.setLoginUrl("/page/login.html");
 	   //将地址过滤规则设置到Filter工厂中

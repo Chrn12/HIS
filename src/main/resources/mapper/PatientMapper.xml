@@ -16,32 +16,32 @@
         <result column="out_time" property="outTime" />
         <result column="did" property="did" />
         <result column="money" property="money" />
+        <result column="nid" property="nid" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, name, age, password, bid, doctor_id, tel, status, in_time, out_time, did, money
+        id, name, age, password, bid, doctor_id, tel, status, in_time, out_time, did, money, nid
     </sql>
-    <!-- 查询住院病人 -->
     <select id="selectPatientsByIn" resultMap="BaseResultMap">
-	    SELECT p0.* 
+	    SELECT p0.*
 		 from patient p0  JOIN patient_info p1 ON p1.patient_id = p0.id WHERE
 		  p1.status = 0
     </select>
-    <!-- 查询出院病人 -->
+
     <select id="selectPatientsByOut" resultMap="BaseResultMap">
-	    SELECT p0.* 
+	    SELECT p0.*
 		 from patient p0  JOIN patient_info p1 ON p1.patient_id = p0.id WHERE
 		  p1.status != 0
     </select>
     <select id="selectPatientsPageByOut" resultType="map">
-	    SELECT p0.* 
+	    SELECT p0.*
 		 from patient p0  JOIN patient_info p1 ON p1.patient_id = p0.id WHERE
 		  p1.status != #{status}
     </select>
-    
+
     <select id="selectPatientsPageByIn" resultType="map">
-	    SELECT p0.* 
+	    SELECT p0.*
 		 from patient p0  JOIN patient_info p1 ON p1.patient_id = p0.id WHERE
 		  p1.status = #{status}
     </select>

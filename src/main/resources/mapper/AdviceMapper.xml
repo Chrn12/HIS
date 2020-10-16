@@ -8,12 +8,13 @@
         <result column="pid" property="pid" />
         <result column="nid" property="nid" />
         <result column="remark" property="remark" />
-        <result column="totalcost" property="totalcost" />
+        <result column="total" property="total" />
+        <result column="doctor_id" property="doctorId" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, pid, nid, remark, totalcost
+        id, pid, nid, remark, total, doctor_id
     </sql>
 
 </mapper>

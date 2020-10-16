@@ -11,7 +11,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author liushaoqi
- * @since 2020-10-12
+ * @since 2020-10-16
  */
 public class Patient implements Serializable {
 
@@ -33,7 +33,7 @@ public class Patient implements Serializable {
     private String tel;
 
     /**
-     * 0为预约中 1成功 2失败
+     * 0为预约中 1医生审核 2住院登记 3已缴费 4失败
      */
     private Integer status;
 
@@ -47,6 +47,8 @@ public class Patient implements Serializable {
     private Integer did;
 
     private Double money;
+
+    private Integer nid;
 
 
     public Integer getId() {
@@ -145,6 +147,14 @@ public class Patient implements Serializable {
         this.money = money;
     }
 
+    public Integer getNid() {
+        return nid;
+    }
+
+    public void setNid(Integer nid) {
+        this.nid = nid;
+    }
+
     @Override
     public String toString() {
         return "Patient{" +
@@ -160,6 +170,7 @@ public class Patient implements Serializable {
         ", outTime=" + outTime +
         ", did=" + did +
         ", money=" + money +
+        ", nid=" + nid +
         "}";
     }
 }

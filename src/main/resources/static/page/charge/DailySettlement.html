@@ -44,8 +44,14 @@
 						$.ajax({
 							url:"/operatingRecord/byday",
 							data:{id:_this.input},
-							success:function(data){								
-								_this.list=data.list;								
+							success:function(data){
+								if(data.list == []){
+									alert("未找到该病人今日结算记录");
+									_this.input=""
+								}else{
+									_this.list=data.list;
+								}
+
 							}							
 						})
 					},											

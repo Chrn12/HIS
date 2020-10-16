@@ -5,17 +5,16 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.woniuxy.his.entity.MedicalAdvice">
         <id column="id" property="id" />
-        <result column="doctor_id" property="doctorId" />
-        <result column="nid" property="nid" />
+        <result column="fid" property="fid" />
+        <result column="aid" property="aid" />
         <result column="remark" property="remark" />
-        <result column="pre_id" property="preId" />
-        <result column="patient_id" property="patientId" />
-        <result column="md_price" property="mdPrice" />
+        <result column="type" property="type" />
+        <result column="status" property="status" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, doctor_id, nid, remark, pre_id, patient_id, md_price
+        id, fid, aid, remark, type, status
     </sql>
 
 </mapper>

@@ -13,7 +13,7 @@
 //	public static void main(String[] args) {
 //	    GlobalConfig config = new GlobalConfig();
 //	    config.setAuthor("liushaoqi") //作者
-//	        .setOutputDir("D:\\dmrm\\springdaima\\his\\his\\src\\main\\java")  //生成路径
+//	        .setOutputDir("D:\\dmrm\\ideatotal\\HIS\\src\\main\\java")  //生成路径
 //	        .setFileOverride(true)//是否文件覆盖，如果多次
 //	        .setIdType(IdType.AUTO) //主键策略
 //	        .setServiceName("%sService") //设置生成的service接口名首字母不用I开头
@@ -30,7 +30,7 @@
 //	    StrategyConfig stConfig = new StrategyConfig();
 //	    stConfig.setCapitalMode(true) // 全局大写命名
 //	        .setNaming(NamingStrategy.underline_to_camel) //下划线转驼峰
-//	        .setInclude("out_drugs");//生成的表,参数为数组
+//	        .setInclude("patient");//生成的表,参数为数组
 //	    //4.包名策略
 //	    PackageConfig pkConfig = new PackageConfig();
 //	    pkConfig.setParent("com.woniuxy.his")//父包名
@@ -47,6 +47,6 @@
 //	        ag.execute();
 //	}
 //
-//	
+//
 //
 //}

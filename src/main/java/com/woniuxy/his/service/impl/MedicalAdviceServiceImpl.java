@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  * </p>
  *
  * @author liushaoqi
- * @since 2020-10-13
+ * @since 2020-10-16
  */
 @Service
 public class MedicalAdviceServiceImpl extends ServiceImpl<MedicalAdviceMapper, MedicalAdvice> implements MedicalAdviceService {

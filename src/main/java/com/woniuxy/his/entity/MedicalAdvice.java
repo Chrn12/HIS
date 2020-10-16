@@ -10,7 +10,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author liushaoqi
- * @since 2020-10-13
+ * @since 2020-10-16
  */
 public class MedicalAdvice implements Serializable {
 
@@ -22,20 +22,18 @@ public class MedicalAdvice implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    private Integer doctorId;
+    private Integer fid;
 
-    private Integer nid;
+    private Integer aid;
 
     private String remark;
 
     /**
      * 处方id
      */
-    private Integer preId;
+    private Integer type;
 
-    private Integer patientId;
-
-    private Double mdPrice;
+    private Integer status;
 
 
     public Integer getId() {
@@ -46,20 +44,20 @@ public class MedicalAdvice implements Serializable {
         this.id = id;
     }
 
-    public Integer getDoctorId() {
-        return doctorId;
+    public Integer getFid() {
+        return fid;
     }
 
-    public void setDoctorId(Integer doctorId) {
-        this.doctorId = doctorId;
+    public void setFid(Integer fid) {
+        this.fid = fid;
     }
 
-    public Integer getNid() {
-        return nid;
+    public Integer getAid() {
+        return aid;
     }
 
-    public void setNid(Integer nid) {
-        this.nid = nid;
+    public void setAid(Integer aid) {
+        this.aid = aid;
     }
 
     public String getRemark() {
@@ -70,40 +68,31 @@ public class MedicalAdvice implements Serializable {
         this.remark = remark;
     }
 
-    public Integer getPreId() {
-        return preId;
+    public Integer getType() {
+        return type;
     }
 
-    public void setPreId(Integer preId) {
-        this.preId = preId;
+    public void setType(Integer type) {
+        this.type = type;
     }
 
-    public Integer getPatientId() {
-        return patientId;
+    public Integer getStatus() {
+        return status;
     }
 
-    public void setPatientId(Integer patientId) {
-        this.patientId = patientId;
-    }
-
-    public Double getMdPrice() {
-        return mdPrice;
-    }
-
-    public void setMdPrice(Double mdPrice) {
-        this.mdPrice = mdPrice;
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     @Override
     public String toString() {
         return "MedicalAdvice{" +
         "id=" + id +
-        ", doctorId=" + doctorId +
-        ", nid=" + nid +
+        ", fid=" + fid +
+        ", aid=" + aid +
         ", remark=" + remark +
-        ", preId=" + preId +
-        ", patientId=" + patientId +
-        ", mdPrice=" + mdPrice +
+        ", type=" + type +
+        ", status=" + status +
         "}";
     }
 }

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Controller;
  * </p>
  *
  * @author liushaoqi
- * @since 2020-10-13
+ * @since 2020-10-16
  */
 @Controller
 @RequestMapping("/medicalAdvice")

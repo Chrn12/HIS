@@ -10,7 +10,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author liushaoqi
- * @since 2020-10-14
+ * @since 2020-10-16
  */
 public class Advice implements Serializable {
 
@@ -25,7 +25,9 @@ public class Advice implements Serializable {
 
     private String remark;
 
-    private Double totalcost;
+    private Double total;
+
+    private Integer doctorId;
 
 
     public Integer getId() {
@@ -60,12 +62,20 @@ public class Advice implements Serializable {
         this.remark = remark;
     }
 
-    public Double getTotalcost() {
-        return totalcost;
+    public Double getTotal() {
+        return total;
     }
 
-    public void setTotalcost(Double totalcost) {
-        this.totalcost = totalcost;
+    public void setTotal(Double total) {
+        this.total = total;
+    }
+
+    public Integer getDoctorId() {
+        return doctorId;
+    }
+
+    public void setDoctorId(Integer doctorId) {
+        this.doctorId = doctorId;
     }
 
     @Override
@@ -75,7 +85,8 @@ public class Advice implements Serializable {
         ", pid=" + pid +
         ", nid=" + nid +
         ", remark=" + remark +
-        ", totalcost=" + totalcost +
+        ", total=" + total +
+        ", doctorId=" + doctorId +
         "}";
     }
 }
